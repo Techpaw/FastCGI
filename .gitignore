@@ -1,0 +1,9 @@
+/.idea
+/bin
+/build
+/cmake-build-debug
+/CMakeFiles
+/cmake_install.cmake
+/CmakeCache.txt
+/conanbuildinfo.cmake
+/Makefile

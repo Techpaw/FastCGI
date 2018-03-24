@@ -1,0 +1,6 @@
+[requires]
+Boost.Asio/1.65.1@bincrafters/stable
+Boost.Stacktrace/1.65.1@bincrafters/stable
+
+[generators]
+cmake
