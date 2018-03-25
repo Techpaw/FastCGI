@@ -85,7 +85,6 @@ namespace Fcgi {
         std::uint32_t currentLength = bufferStep;
         char* buffer = new char[bufferStep];
         char* newLinePos;
-//        bool lineRead = false;
 
         while (true) {
           std::fseek(this->dataFile, currentPosition, SEEK_SET);
@@ -97,7 +96,6 @@ namespace Fcgi {
             buffer[currentLength - 2] == '\n' ||
             buffer[currentLength - 2] == '\0'
           ) {
-//            lineRead = true;
             break;
           }
 
@@ -132,6 +130,10 @@ namespace Fcgi {
 
 
     bool eof() {
+      if (dataLength == 0) {
+        return true;
+      }
+
       if (this->fileMode) {
         return (bool) std::feof(this->dataFile);
       }

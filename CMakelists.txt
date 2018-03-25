@@ -7,7 +7,9 @@ set(SOURCES_DIR src)
 
 set(HEADERS
     ${INCLUDE_DIR}/builders/response_builders/end_request_builder.hpp
-    ${INCLUDE_DIR}/builders/response_builders/stdout_builder.hpp
+    ${INCLUDE_DIR}/builders/response_builders/get_values_builder.hpp
+    ${INCLUDE_DIR}/builders/response_builders/out_builder.hpp
+    ${INCLUDE_DIR}/builders/response_builder.hpp
     ${INCLUDE_DIR}/calculators/bytes_expander.hpp
     ${INCLUDE_DIR}/calculators/bytes_reducer.hpp
     ${INCLUDE_DIR}/exceptions/basic_exception.hpp
@@ -32,6 +34,7 @@ set(HEADERS
     ${INCLUDE_DIR}/body.hpp
     ${INCLUDE_DIR}/server.hpp
     ${INCLUDE_DIR}/buffer.hpp
+    ${INCLUDE_DIR}/configuration.hpp
     ${INCLUDE_DIR}/connection.fwd.hpp
     ${INCLUDE_DIR}/connection.hpp
     ${INCLUDE_DIR}/header.hpp

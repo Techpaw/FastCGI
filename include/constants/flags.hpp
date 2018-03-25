@@ -3,7 +3,7 @@
 namespace Fcgi {
   namespace Constants {
     namespace Flags {
-      const unsigned char FCGI_KEEP_CONN = 1;
+      const unsigned char KEEP_CONN = 1;
     }
   }
 }

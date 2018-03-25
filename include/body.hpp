@@ -8,9 +8,7 @@
 namespace Fcgi {
   class Body {
   public:
-    explicit Body() : data{Buffer()}, body{Buffer()} {
-
-    }
+    explicit Body() : data{Buffer()}, body{Buffer()}, error{Buffer()} {}
 
     void setRole(RoleType role) {
       this->role = role;
@@ -36,6 +34,10 @@ namespace Fcgi {
       this->params.insert(params.begin(), params.end());
     }
 
+    void setParam(std::string name, std::string value) {
+      this->params[name] = value;
+    }
+
     std::map<std::string, std::string> getParams() {
       return this->params;
     }
@@ -44,9 +46,9 @@ namespace Fcgi {
       return this->params[name];
     }
 
-//    void setBody(char* body) {
-//      this->body = body;
-//    }
+    void setBody(const char* data, std::size_t length) {
+      this->body.setData(data, length);
+    }
 
     void appendBody(const char* body, std::size_t length) {
       this->body.appendData(body, length);
@@ -54,6 +56,18 @@ namespace Fcgi {
 
     Buffer& getBody() {
       return this->body;
+    }
+
+    void setError(const char* error, std::size_t length) {
+      this->error.setData(error, length);
+    }
+
+    void appendError(const char* error, std::size_t length) {
+      this->error.appendData(error, length);
+    }
+
+    Buffer& getError() {
+      return this->error;
     }
 
     void setData(const char* data, std::size_t length) {
@@ -70,9 +84,8 @@ namespace Fcgi {
   private:
     Buffer data;
     Buffer body;
-//    std::FILE* data;
+    Buffer error;
     std::map<std::string, std::string> params;
-//    std::string body;
     std::uint8_t flags;
     RoleType role;
   };

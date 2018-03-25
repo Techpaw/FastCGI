@@ -14,13 +14,17 @@ namespace Fcgi {
     namespace ResponseBuilders {
       class EndRequestBuilder {
       public:
-        explicit EndRequestBuilder(Pointers::ConnectionPointer& connection, Pointers::ResponsePointer& response) :
-            connection{connection}, response{response}
+        explicit EndRequestBuilder(
+            Pointers::ConnectionPointer& connection,
+            Pointers::ResponsePointer& response
+        ) :
+            connection{connection},
+            response{response}
         {}
 
-        void build() {
+        void build(bool closeAfterWrite = false) {
           this->sendHeader();
-          this->sendBody();
+          this->sendBody(closeAfterWrite);
         }
       private:
         Pointers::ResponsePointer response;
@@ -46,7 +50,7 @@ namespace Fcgi {
           delete[] buffer;
         }
 
-        void sendBody() {
+        void sendBody(bool closeAfterWrite = false) {
           char* buffer = new char[Constants::Limits::HEADER_LENGTH];
           auto appStatus = Calculators::BytesExpander::expand32(this->response->getAppStatus());
           auto requestId = Calculators::BytesExpander::expand16(
@@ -62,7 +66,7 @@ namespace Fcgi {
           buffer[6] = '\0';
           buffer[7] = '\0';
 
-          this->connection->write(buffer, Constants::Limits::HEADER_LENGTH, true);
+          this->connection->write(buffer, Constants::Limits::HEADER_LENGTH, closeAfterWrite);
           delete[] buffer;
         }
       };

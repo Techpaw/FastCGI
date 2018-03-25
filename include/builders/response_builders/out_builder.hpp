@@ -14,17 +14,22 @@
 namespace Fcgi {
   namespace Builders {
     namespace ResponseBuilders {
-      class StdoutBuilder {
+      class OutBuilder {
       public:
+        enum TYPE { STDOUT = 0, STDERR };
+
         /**
          * Construct a new StdoutBuilder
          * @param connection
          * @param response
          */
-        explicit StdoutBuilder(
+        explicit OutBuilder(
             Pointers::ConnectionPointer& connection,
-            Pointers::ResponsePointer& response
-        ) : connection{connection}, response{response}
+            Pointers::ResponsePointer& response,
+            TYPE type
+        ) : connection{connection},
+            response{response},
+            type{type}
         {}
 
         /**
@@ -32,12 +37,7 @@ namespace Fcgi {
          * Automatically split the content by portions
          */
         void build() {
-          std::list<std::string> outputStreams;
-          std::string outputBuffer;
-
-          char buffer[Constants::Limits::MAX_PORTION_LENGTH];
-
-          Buffer& data = this->response->getBody().getData();
+          Buffer& data = this->dataSource();
 
           while (!data.eof()) {
             this->sendPortion(data.readData(Constants::Limits::MAX_PORTION_LENGTH));
@@ -48,6 +48,23 @@ namespace Fcgi {
       private:
         Pointers::ResponsePointer response;
         Pointers::ConnectionPointer connection;
+        TYPE type;
+
+        Buffer& dataSource() {
+          if (this->type == TYPE::STDOUT) {
+            return this->response->getBody().getBody();
+          }
+
+          return this->response->getBody().getError();
+        }
+
+        HeaderType sourceType() {
+          if (this->type == TYPE::STDOUT) {
+            return HeaderType::STDOUT;
+          }
+
+          return HeaderType::STDERR;
+        }
 
         /**
          * Send portion of STDOUT data
@@ -56,7 +73,6 @@ namespace Fcgi {
          */
         void sendPortion(std::string portion) {
           char buffer[Constants::Limits::HEADER_LENGTH];
-          std::string portionString = portion;
           std::uint32_t portionLength = portion.length();
           auto contentLength = Calculators::BytesExpander::expand16((std::uint16_t) portion.length());
           auto requestId = Calculators::BytesExpander::expand16(
@@ -64,7 +80,7 @@ namespace Fcgi {
           );
 
           buffer[0] = Constants::Versions::FCGI_VERSION;
-          buffer[1] = (std::uint8_t) HeaderType::STDOUT;
+          buffer[1] = (std::uint8_t) this->sourceType();
           buffer[2] = std::get<1>(requestId);
           buffer[3] = std::get<0>(requestId);
           buffer[4] = std::get<1>(contentLength);
