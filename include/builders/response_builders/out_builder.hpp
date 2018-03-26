@@ -10,13 +10,16 @@
 #include <calculators/bytes_expander.hpp>
 #include <pointers/response_pointer.hpp>
 #include <pointers/connection_pointer.hpp>
+#include <builders/response_builders/base_builder.hpp>
 
 namespace Fcgi {
   namespace Builders {
     namespace ResponseBuilders {
-      class OutBuilder {
+      class OutBuilder : private BaseBuilder {
       public:
         enum TYPE { STDOUT = 0, STDERR };
+
+        using BaseBuilder::BaseBuilder;
 
         /**
          * Construct a new StdoutBuilder
@@ -27,13 +30,12 @@ namespace Fcgi {
             Pointers::ConnectionPointer& connection,
             Pointers::ResponsePointer& response,
             TYPE type
-        ) : connection{connection},
-            response{response},
+        ) : BaseBuilder{connection, response},
             type{type}
         {}
 
         /**
-         * Build and send STDOUT response
+         * Build and send STD* response
          * Automatically split the content by portions
          */
         void build() {
@@ -46,8 +48,6 @@ namespace Fcgi {
           this->sendPortion("");
         }
       private:
-        Pointers::ResponsePointer response;
-        Pointers::ConnectionPointer connection;
         TYPE type;
 
         Buffer& dataSource() {
@@ -58,7 +58,7 @@ namespace Fcgi {
           return this->response->getBody().getError();
         }
 
-        HeaderType sourceType() {
+        HeaderType headerType() {
           if (this->type == TYPE::STDOUT) {
             return HeaderType::STDOUT;
           }
@@ -67,29 +67,13 @@ namespace Fcgi {
         }
 
         /**
-         * Send portion of STDOUT data
+         * Send portion of STD* data
          * @param portion Portion content
          * @return void
          */
         void sendPortion(std::string portion) {
-          char buffer[Constants::Limits::HEADER_LENGTH];
-          std::uint32_t portionLength = portion.length();
-          auto contentLength = Calculators::BytesExpander::expand16((std::uint16_t) portion.length());
-          auto requestId = Calculators::BytesExpander::expand16(
-            this->response->getHeader().getRequestId()
-          );
-
-          buffer[0] = Constants::Versions::FCGI_VERSION;
-          buffer[1] = (std::uint8_t) this->sourceType();
-          buffer[2] = std::get<1>(requestId);
-          buffer[3] = std::get<0>(requestId);
-          buffer[4] = std::get<1>(contentLength);
-          buffer[5] = std::get<0>(contentLength);
-          buffer[6] = '\0';
-          buffer[7] = '\0';
-
-          this->connection->write(buffer, Constants::Limits::HEADER_LENGTH);
-          this->connection->write(portion.c_str(), portionLength);
+          this->sendHeader(this->headerType(), (std::uint16_t) portion.length());
+          this->connection->write(portion.c_str(), (std::uint32_t) portion.length());
         }
       };
     }

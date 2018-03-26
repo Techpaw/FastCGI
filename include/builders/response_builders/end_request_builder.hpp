@@ -8,50 +8,23 @@
 #include <calculators/bytes_expander.hpp>
 #include <pointers/response_pointer.hpp>
 #include <pointers/connection_pointer.hpp>
+#include <builders/response_builders/base_builder.hpp>
 
 namespace Fcgi {
   namespace Builders {
     namespace ResponseBuilders {
-      class EndRequestBuilder {
+      class EndRequestBuilder : private BaseBuilder {
       public:
-        explicit EndRequestBuilder(
-            Pointers::ConnectionPointer& connection,
-            Pointers::ResponsePointer& response
-        ) :
-            connection{connection},
-            response{response}
-        {}
+        using BaseBuilder::BaseBuilder;
 
         void build(bool closeAfterWrite = false) {
-          this->sendHeader();
+          this->sendHeader(HeaderType::END_REQUEST, Constants::Limits::END_REQUEST_BODY_LENGTH);
           this->sendBody(closeAfterWrite);
         }
+
       private:
-        Pointers::ResponsePointer response;
-        Pointers::ConnectionPointer connection;
-
-        void sendHeader() {
-          char* buffer = new char[Constants::Limits::HEADER_LENGTH];
-          auto contentLength = Calculators::BytesExpander::expand16(Constants::Limits::END_REQUEST_BODY_LENGTH);
-          auto requestId = Calculators::BytesExpander::expand16(
-              this->response->getHeader().getRequestId()
-          );
-
-          buffer[0] = Constants::Versions::FCGI_VERSION;
-          buffer[1] = (std::uint8_t) HeaderType::END_REQUEST;
-          buffer[2] = std::get<1>(requestId);
-          buffer[3] = std::get<0>(requestId);
-          buffer[4] = std::get<1>(contentLength);
-          buffer[5] = std::get<0>(contentLength);
-          buffer[6] = '\0';
-          buffer[7] = '\0';
-
-          this->connection->write(buffer, Constants::Limits::HEADER_LENGTH);
-          delete[] buffer;
-        }
-
         void sendBody(bool closeAfterWrite = false) {
-          char* buffer = new char[Constants::Limits::HEADER_LENGTH];
+          char buffer[Constants::Limits::END_REQUEST_BODY_LENGTH];
           auto appStatus = Calculators::BytesExpander::expand32(this->response->getAppStatus());
           auto requestId = Calculators::BytesExpander::expand16(
               this->response->getHeader().getRequestId()
@@ -67,7 +40,6 @@ namespace Fcgi {
           buffer[7] = '\0';
 
           this->connection->write(buffer, Constants::Limits::HEADER_LENGTH, closeAfterWrite);
-          delete[] buffer;
         }
       };
     }

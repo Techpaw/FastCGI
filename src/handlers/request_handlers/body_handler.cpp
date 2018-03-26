@@ -14,7 +14,9 @@ namespace Fcgi {
       BodyHandler::BodyHandler() : response{new Response()} {}
 
       void BodyHandler::handle(Pointers::ConnectionPointer& connection, RequestPointer& request) {
-        if (this->paramsRequested(request)) {
+        if (this->invalidRoleReceived(request)) {
+          this->handleInvalidRoleReceived(connection, request);
+        } else if (this->paramsRequested(request)) {
           this->handleParamsRequested(connection, request);
         } else if (this->requestCompleted(request)) {
           this->handleRequestCompleted(connection, request);
@@ -26,6 +28,18 @@ namespace Fcgi {
           connection->start();
         }
       };
+
+      // @todo move all these handlers to strategies
+      void BodyHandler::handleInvalidRoleReceived(Pointers::ConnectionPointer& connection, RequestPointer& request) {
+        auto rb = Builders::ResponseBuilder(connection, this->response);
+
+        this->response->getHeader().setRequestId(request->getHeader().getRequestId());
+        this->response->getHeader().setType(HeaderType::STDOUT);
+        this->response->setprotocolStatus(ProtocolStatusType::UNKNOWN_ROLE);
+        this->response->setAppStatus(501);
+
+        rb.end().build(this->closeAfterWrite(request));
+      }
 
       void BodyHandler::handleParamsRequested(Pointers::ConnectionPointer& connection, RequestPointer& request) {
         auto rb = Builders::ResponseBuilder(connection, this->response);
@@ -42,6 +56,7 @@ namespace Fcgi {
         response->getHeader().setType(HeaderType::STDOUT);
         response->getBody().setBody(text.c_str(), text.length());
         response->getHeader().setRequestId(request->getHeader().getRequestId());
+        // @todo move app statuses to consts or enums
         response->setAppStatus(200);
         response->setprotocolStatus(ProtocolStatusType::REQUEST_COMPLETE);
 
@@ -65,6 +80,11 @@ namespace Fcgi {
 
       bool BodyHandler::paramsRequested(RequestPointer& request) {
         return request->getHeader().getType() == HeaderType::GET_VALUES;
+      }
+
+      bool BodyHandler::invalidRoleReceived(RequestPointer& request) {
+        auto role = (RoleType) Configuration::get<std::uint16_t>("APPLICATION_TYPE");
+        return role != request->getBody().getRole();
       }
     }
   }

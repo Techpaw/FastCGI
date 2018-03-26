@@ -23,7 +23,7 @@ namespace Fcgi {
     }
 
     std::string& operator[] (const std::string name) {
-      return this->map[std::move(name)];
+      return this->map[name];
     }
   private:
     std::map<std::string, std::string> map;
@@ -32,6 +32,7 @@ namespace Fcgi {
       this->map["FCGI_MAX_CONNS"] = "10";
       this->map["FCGI_MAX_REQS"] = "50";
       this->map["FCGI_MPXS_CONNS"] = "0";
+      this->map["APPLICATION_TYPE"] = std::to_string((std::uint16_t) RoleType::RESPONDER);
     }
   };
 }

@@ -12,18 +12,14 @@
 #include <calculators/bytes_expander.hpp>
 #include <pointers/response_pointer.hpp>
 #include <pointers/connection_pointer.hpp>
+#include <builders/response_builders/base_builder.hpp>
 
 namespace Fcgi {
   namespace Builders {
     namespace ResponseBuilders {
-      class GetValuesBuilder {
+      class GetValuesBuilder : private BaseBuilder {
       public:
-        explicit GetValuesBuilder(
-            Pointers::ConnectionPointer& connection,
-            Pointers::ResponsePointer& response
-        ) : connection{connection},
-            response{response}
-        {}
+        using BaseBuilder::BaseBuilder;
 
         void build() {
           std::string output;
@@ -33,17 +29,16 @@ namespace Fcgi {
           for (auto const& pair : this->response->getBody().getParams()) {
             this->appendLengthInfo(pair.first, output);
             this->appendLengthInfo(pair.second, output);
+
             output.append(pair.first);
             output.append(pair.second);
           }
 
-          this->sendData(output);
+          this->sendHeader(HeaderType::GET_VALUES_RESULT, (std::uint16_t) output.length());
+          this->connection->write(output.c_str(), output.length());
         }
 
       private:
-        Pointers::ResponsePointer response;
-        Pointers::ConnectionPointer connection;
-
         void appendDefaultValues() {
           this->response->getBody().setParam("FCGI_MAX_CONNS", Configuration::get<std::string>("FCGI_MAX_CONNS"));
           this->response->getBody().setParam("FCGI_MAX_REQS", Configuration::get<std::string>("FCGI_MAX_REQS"));
@@ -66,26 +61,6 @@ namespace Fcgi {
             buffer[0] = (std::uint8_t) source.length();
             destination.append(buffer);
           }
-        }
-
-        void sendData(std::string& data) {
-          char buffer[Constants::Limits::HEADER_LENGTH];
-          auto contentLength = Calculators::BytesExpander::expand16((std::uint16_t) data.length());
-          auto requestId = Calculators::BytesExpander::expand16(
-            this->response->getHeader().getRequestId()
-          );
-
-          buffer[0] = Constants::Versions::FCGI_VERSION;
-          buffer[1] = (std::uint8_t) HeaderType::GET_VALUES_RESULT;
-          buffer[2] = std::get<1>(requestId);
-          buffer[3] = std::get<0>(requestId);
-          buffer[4] = std::get<1>(contentLength);
-          buffer[5] = std::get<0>(contentLength);
-          buffer[6] = '\0';
-          buffer[7] = '\0';
-
-          this->connection->write(buffer, Constants::Limits::HEADER_LENGTH);
-          this->connection->write(data.c_str(), data.length());
         }
       };
     }

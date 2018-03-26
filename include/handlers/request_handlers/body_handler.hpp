@@ -21,8 +21,10 @@ namespace Fcgi {
         bool lastPortionReceived(RequestPointer&);
         bool requestCompleted(RequestPointer&);
         bool paramsRequested(RequestPointer&);
+        void handleInvalidRoleReceived(Pointers::ConnectionPointer&, RequestPointer&);
         void handleRequestCompleted(Pointers::ConnectionPointer&, RequestPointer&);
         void handleParamsRequested(Pointers::ConnectionPointer&, RequestPointer&);
+        bool invalidRoleReceived(RequestPointer&);
       };
     }
   }

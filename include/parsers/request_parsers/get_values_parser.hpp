@@ -3,6 +3,7 @@
 #include <header_type.hpp>
 #include <parsers/request_parsers/abstract_parser.hpp>
 
+// @todo no need to keep this parser, as there's nothing to parse
 namespace Fcgi {
   namespace Parsers {
     namespace RequestParsers {
