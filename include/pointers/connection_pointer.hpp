@@ -1,9 +1,9 @@
 #pragma once
 
-#include <connection.fwd.hpp>
+#include <connections/abstract_connection.hpp>
 
 namespace Fcgi {
   namespace Pointers {
-    typedef std::shared_ptr<Connection> ConnectionPointer;
+    typedef std::shared_ptr<Connections::AbstractConnection> ConnectionPointer;
   }
 }

@@ -1,48 +1,28 @@
-#include <connection.hpp>
-#include <response.hpp>
 #include <handlers/connection_handler.hpp>
 
 namespace Fcgi {
   namespace Handlers {
-    ConnectionHandler::ConnectionHandler() :
-      request{new Request()}, response(new Response())
+    ConnectionHandler::ConnectionHandler(Connections::AbstractConnection* connection) :
+      request{new Request()}, response(new Response()), connection{connection},
+      bodyHandler{RequestHandlers::BodyHandlersChain()},
+      headerHandler{RequestHandlers::HeaderHandler()}
     {}
 
-    void ConnectionHandler::setConnection(Pointers::ConnectionPointer& connection) {
-      this->connection = connection;
-    };
-
     void ConnectionHandler::handleReadHead() {
-//        this->checkLength(this->connection->getHeaderState());
-      headerHandler.handle(this->connection, this->request);
+//      this->checkLength(this->connection->getHeaderState());
+      headerHandler.handle(this->connection, this->request, this->response);
       this->connection->readBody(this->request->getHeader().getBodyLength());
     }
 
     void ConnectionHandler::handleReadBody() {
-//        this->checkLength(this->connection->getBodyState());
-      bodyHandler.handle(this->connection, this->request);
+//      this->checkLength(this->connection->getBodyState());
+      bodyHandler.handle(this->connection, this->request, this->response);
     }
 
-    RequestPointer ConnectionHandler::getRequest() {
-      return this->request;
-    }
-
-    Pointers::ResponsePointer ConnectionHandler::getResponse() {
-      return this->response;
-    }
-
-    State& ConnectionHandler::getHeaderState() {
-      return this->connection->getHeaderState();
-    }
-
-    State& ConnectionHandler::getBodyState() {
-      return this->connection->getHeaderState();
-    }
-
-    void ConnectionHandler::checkLength(State& state) {
-      if (state.getBytesTransferred() != state.getBytesReceived() || (bool) state.getErrorCode()) {
-        raise(Exceptions::InvalidLengthException("Unexpected content length received"));
-      }
-    }
+//    void ConnectionHandler::checkLength(State& state) {
+//      if (state.getBytesTransferred() != state.getBytesReceived() || (bool) state.getErrorCode()) {
+//        raise_exception(Exceptions::InvalidLengthException("Unexpected content length received"));
+//      }
+//    }
   }
 }

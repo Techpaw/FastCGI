@@ -11,7 +11,7 @@ namespace Fcgi {
     class ResponseBuilder {
     public:
       explicit ResponseBuilder(
-        Pointers::ConnectionPointer& connection,
+        const Pointers::ConnectionPointer& connection,
         Pointers::ResponsePointer& response
       ) :
         connection{connection},

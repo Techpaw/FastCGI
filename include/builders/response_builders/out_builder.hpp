@@ -3,7 +3,6 @@
 #include <list>
 #include <string>
 #include <header_type.hpp>
-#include <connection.hpp>
 #include <buffer.hpp>
 #include <constants/versions.hpp>
 #include <constants/limits.hpp>

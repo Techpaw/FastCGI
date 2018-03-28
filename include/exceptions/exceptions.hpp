@@ -23,4 +23,4 @@ namespace Fcgi {
   }
 }
 
-#define raise(ex) BOOST_THROW_EXCEPTION(ex)
+#define raise_exception(ex) BOOST_THROW_EXCEPTION(ex)

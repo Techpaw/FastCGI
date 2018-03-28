@@ -75,7 +75,7 @@ namespace Fcgi {
             valueLength = Calculators::BytesReducer::reduce32(str, offset + 4);
             offsetLength = 8;
           } else {
-            raise(Fcgi::Exceptions::BadParamsException("Params name/value pair could not be calculated"));
+            raise_exception(Fcgi::Exceptions::BadParamsException("Params name/value pair could not be calculated"));
           }
 
           this->checkPairLength(nameLength + valueLength + offsetLength, length, offset);
@@ -85,7 +85,7 @@ namespace Fcgi {
 
         void checkPairLength(std::size_t expected, std::size_t actual, std::size_t offset) {
           if (actual < expected) {
-            raise(Fcgi::Exceptions::BadParamsException("Unexpected param length received"));
+            raise_exception(Fcgi::Exceptions::BadParamsException("Unexpected param length received"));
           }
         }
 
@@ -106,12 +106,12 @@ namespace Fcgi {
         }
 
         bool is_short(const char* str, std::size_t offset) {
-          std::uint8_t byte = (std::uint8_t) str[offset];
+          auto byte = (std::uint8_t) str[offset];
           return byte >> 7 == 0;
         }
 
         bool is_long(const char* str, std::size_t offset) {
-          std::uint8_t byte = (std::uint8_t) str[offset];
+          auto byte = (std::uint8_t) str[offset];
           return byte >> 7 == 1;
         }
 

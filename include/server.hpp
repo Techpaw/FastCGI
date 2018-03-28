@@ -1,11 +1,6 @@
 #pragma once
 
-#include <thread>
-#include <vector>
-#include <boost/asio.hpp>
-#include <boost/bind.hpp>
 #include <pointers/connection_pointer.hpp>
-#include <pointers/connection_handler_pointer.hpp>
 
 namespace Fcgi {
   using boost::asio::local::stream_protocol;
@@ -26,6 +21,5 @@ namespace Fcgi {
     boost::asio::signal_set signals;
     uint8_t threadPoolSize = 16;
     Pointers::ConnectionPointer connection;
-    Pointers::ConnectionHandlerPointer connectionHandler;
   };
 }

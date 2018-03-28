@@ -30,5 +30,6 @@ namespace Fcgi {
     Body body;
   };
 
+  // @todo move to Pointers::
   typedef std::shared_ptr<Request> RequestPointer;
 }

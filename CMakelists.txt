@@ -11,15 +11,26 @@ set(HEADERS
     ${INCLUDE_DIR}/builders/response_builders/get_values_builder.hpp
     ${INCLUDE_DIR}/builders/response_builders/out_builder.hpp
     ${INCLUDE_DIR}/builders/response_builder.hpp
+
     ${INCLUDE_DIR}/calculators/bytes_expander.hpp
     ${INCLUDE_DIR}/calculators/bytes_reducer.hpp
+
+    ${INCLUDE_DIR}/connections/abstract_connection.hpp
+    ${INCLUDE_DIR}/connections/domain_socket_connection.hpp
+
     ${INCLUDE_DIR}/exceptions/basic_exception.hpp
     ${INCLUDE_DIR}/exceptions/exceptions.hpp
     ${INCLUDE_DIR}/constants/limits.hpp
     ${INCLUDE_DIR}/constants/flags.hpp
     ${INCLUDE_DIR}/constants/versions.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/body_handler.hpp
+    ${INCLUDE_DIR}/handlers/request_handlers/abstract_handler.hpp
+    ${INCLUDE_DIR}/handlers/request_handlers/body_handlers_chain.hpp
+    ${INCLUDE_DIR}/handlers/request_handlers/complete_request_handler.hpp
+    ${INCLUDE_DIR}/handlers/request_handlers/fallback_handler.hpp
+    ${INCLUDE_DIR}/handlers/request_handlers/get_values_handler.hpp
     ${INCLUDE_DIR}/handlers/request_handlers/header_handler.hpp
+    ${INCLUDE_DIR}/handlers/request_handlers/invalid_role_handler.hpp
+    ${INCLUDE_DIR}/handlers/connection_handler.fwd.hpp
     ${INCLUDE_DIR}/handlers/connection_handler.hpp
     ${INCLUDE_DIR}/parsers/request_parsers/abstract_parser.hpp
     ${INCLUDE_DIR}/parsers/request_parsers/begin_request_parser.hpp
@@ -36,8 +47,8 @@ set(HEADERS
     ${INCLUDE_DIR}/server.hpp
     ${INCLUDE_DIR}/buffer.hpp
     ${INCLUDE_DIR}/configuration.hpp
-    ${INCLUDE_DIR}/connection.fwd.hpp
-    ${INCLUDE_DIR}/connection.hpp
+#    ${INCLUDE_DIR}/connection.fwd.hpp
+#    ${INCLUDE_DIR}/connection.hpp
     ${INCLUDE_DIR}/header.hpp
     ${INCLUDE_DIR}/header_type.hpp
     ${INCLUDE_DIR}/protocol_status_type.hpp
@@ -48,11 +59,11 @@ set(HEADERS
 )
 
 set(SOURCES
+  ${SOURCES_DIR}/connections/domain_socket_connection.cpp
   ${SOURCES_DIR}/exceptions/basic_exception.cpp
   ${SOURCES_DIR}/handlers/connection_handler.cpp
-  ${SOURCES_DIR}/handlers/request_handlers/body_handler.cpp
   ${SOURCES_DIR}/handlers/request_handlers/header_handler.cpp
-  ${SOURCES_DIR}/connection.cpp
+#  ${SOURCES_DIR}/connection.cpp
   ${SOURCES_DIR}/server.cpp
 )
 

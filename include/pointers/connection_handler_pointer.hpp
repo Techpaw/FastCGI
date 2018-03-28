@@ -1,6 +1,6 @@
 #pragma once
 
-#include <handlers/connection_handler.hpp>
+#include <handlers/connection_handler.fwd.hpp>
 
 namespace Fcgi {
   namespace Pointers {

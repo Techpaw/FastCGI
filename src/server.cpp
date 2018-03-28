@@ -1,5 +1,8 @@
-#include <connection.hpp>
+#include <thread>
+#include <boost/bind.hpp>
+
 #include <server.hpp>
+#include <connections/domain_socket_connection.hpp>
 
 namespace Fcgi {
   Server::Server() : ioService{}, signals{ioService}, acceptor{ioService} {
@@ -55,11 +58,11 @@ namespace Fcgi {
 
   void Server::startAccept()
   {
-    this->connectionHandler.reset(new Handlers::ConnectionHandler());
-    this->connection.reset(new Connection(this->ioService));
+//    this->connectionHandler.reset(new Handlers::ConnectionHandler());
+    this->connection.reset(new Connections::DomainSocketConnection(this->ioService));
 
-    this->connectionHandler->setConnection(this->connection);
-    this->connection->setConnectionHandler(this->connectionHandler);
+//    this->connectionHandler->setConnection(this->connection);
+//    this->connection->setConnectionHandler(this->connectionHandler);
 
     this->acceptor.async_accept(
         this->connection->getSocket(),
