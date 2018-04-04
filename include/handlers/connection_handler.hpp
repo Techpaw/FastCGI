@@ -6,6 +6,7 @@
 #include <exceptions/exceptions.hpp>
 #include <handlers/request_handlers/header_handler.hpp>
 #include <handlers/request_handlers/body_handlers_chain.hpp>
+#include <pointers/connection_pointer.hpp>
 #include <pointers/response_pointer.hpp>
 
 namespace Fcgi {
@@ -13,7 +14,7 @@ namespace Fcgi {
     class ConnectionHandler {
     public:
       explicit ConnectionHandler() = default;
-      explicit ConnectionHandler(Connections::AbstractConnection* connection);
+      explicit ConnectionHandler(Pointers::ConnectionPointer connection);
 //      void setConnection(Pointers::ConnectionPointer& connection);
       void handleReadHead();
       void handleReadBody();

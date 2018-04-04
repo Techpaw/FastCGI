@@ -17,11 +17,12 @@ namespace Fcgi {
             const RequestPointer& request,
             Pointers::ResponsePointer& response
         ) override {
+          auto x = this->mayHandle(connection, request, response);
           auto rb = Builders::ResponseBuilder(connection, response);
 
           // @todo run middlewares here
           // @todo save and read stdout from tmpfile
-          std::string text = "Content-type: text/html; charset=utf-8\r\n\r\n";
+          std::string text = "Content-type: text/html; charset=utf-8\r\n\r\nHELLO";
 
           response->getHeader().setType(HeaderType::STDOUT);
           response->getBody().setBody(text.c_str(), text.length());
@@ -41,6 +42,10 @@ namespace Fcgi {
         ) override {
           return request->getHeader().getType() == HeaderType::ABORT_REQUEST ||
             this->lastPortionReceived(request);
+        }
+
+        bool stopOnHandle() override {
+          return true;
         }
 
       private:

@@ -35,6 +35,10 @@ namespace Fcgi {
           auto role = (RoleType) Configuration::get<std::uint16_t>("APPLICATION_TYPE");
           return role != request->getBody().getRole();
         }
+
+        bool stopOnHandle() override {
+          return true;
+        }
       };
     }
   }

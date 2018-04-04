@@ -1,5 +1,4 @@
-#include <domain_socket_connection.hpp>
-#include <handlers/request_handlers/header_handler.hpp>
+#include <connections/domain_socket_connection.hpp>
 
 namespace Fcgi {
   namespace Handlers {

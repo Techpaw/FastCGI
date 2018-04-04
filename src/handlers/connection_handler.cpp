@@ -2,8 +2,10 @@
 
 namespace Fcgi {
   namespace Handlers {
-    ConnectionHandler::ConnectionHandler(Connections::AbstractConnection* connection) :
-      request{new Request()}, response(new Response()), connection{connection},
+    ConnectionHandler::ConnectionHandler(Pointers::ConnectionPointer connection) :
+      request{std::make_shared<Request>()},
+      response(std::make_shared<Response>()),
+      connection{connection},
       bodyHandler{RequestHandlers::BodyHandlersChain()},
       headerHandler{RequestHandlers::HeaderHandler()}
     {}

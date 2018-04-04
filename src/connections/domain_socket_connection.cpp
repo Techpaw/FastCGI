@@ -4,8 +4,13 @@
 namespace Fcgi {
   namespace Connections {
     DomainSocketConnection::DomainSocketConnection(boost::asio::io_service& ioService) :
-        socket(ioService), strand(ioService), connectionHandler{Handlers::ConnectionHandler(this)}
+        socket(ioService),
+        strand(ioService)
     {}
+
+    void DomainSocketConnection::initConnectionHandler() {
+      this->connectionHandler = Handlers::ConnectionHandler(this->shared_from_this());
+    }
 
 //    void DomainSocketConnection::setConnectionHandler(Pointers::ConnectionHandlerPointer& connectionHandler) {
 //      this->connectionHandler = connectionHandler;

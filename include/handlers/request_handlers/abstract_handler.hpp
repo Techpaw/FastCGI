@@ -12,8 +12,12 @@ namespace Fcgi {
         virtual void handle(const Pointers::ConnectionPointer&, const RequestPointer&, Pointers::ResponsePointer&) = 0;
         virtual bool mayHandle(const Pointers::ConnectionPointer&, const RequestPointer&, Pointers::ResponsePointer&) = 0;
         virtual ~AbstractHandler() = default;
+
+        virtual bool stopOnHandle() {
+          return false;
+        }
       protected:
-        bool closeAfterWrite(const RequestPointer& request) {
+        virtual bool closeAfterWrite(const RequestPointer& request) {
           return (request->getBody().getFlags() & Constants::Flags::KEEP_CONN) == 0;
         }
       };

@@ -20,6 +20,7 @@ namespace Fcgi {
       virtual void handleReadBody(const boost::system::error_code& errorCode, std::size_t bytesTransferred, std::size_t bodyLength) = 0;
       virtual void write(const char* data, std::size_t, bool closeAfterWrite = false) = 0;
       virtual void handleWrite(const boost::system::error_code&, bool closeAfterWrite) = 0;
+      virtual void initConnectionHandler() = 0;
       virtual State& getHeaderState() = 0;
       virtual State& getBodyState() = 0;
     };

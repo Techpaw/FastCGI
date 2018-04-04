@@ -14,14 +14,16 @@ namespace Fcgi {
       class BodyHandlersChain : public AbstractHandler {
       public:
         explicit BodyHandlersChain() {
-          this->add(new FallbackHandler());
-          this->add(new InvalidRoleHandler());
-          this->add(new GetValuesHandler());
-          this->add(new CompleteRequestHandler());
+
+          // @todo add parser handler here
+          this->add(std::make_unique<InvalidRoleHandler>());
+          this->add(std::make_unique<GetValuesHandler>());
+          this->add(std::make_unique<CompleteRequestHandler>());
+          this->add(std::make_unique<FallbackHandler>());
         }
 
-        void add(AbstractHandler* parser) {
-          this->handlersList.push_back(parser);
+        void add(std::unique_ptr<AbstractHandler> handler) {
+          this->handlersList.push_back(std::move(handler));
         }
 
         void handle(
@@ -29,13 +31,17 @@ namespace Fcgi {
             const RequestPointer& request,
             Pointers::ResponsePointer& response
         ) {
-          std::list<AbstractHandler*>::iterator it;
+          std::list<std::unique_ptr<AbstractHandler>>::iterator it;
 
           for (it = this->handlersList.begin(); it != this->handlersList.end(); ++it) {
-            AbstractHandler* x = (*it);
+            auto handler = std::move(*it);
+
             if ((*it)->mayHandle(connection, request, response)) {
               (*it)->handle(connection, request, response);
-//              break;
+
+              if ((*it)->stopOnHandle()) {
+                break;
+              }
             }
           }
         }
@@ -48,15 +54,15 @@ namespace Fcgi {
           return true;
         }
 
-        ~BodyHandlersChain() {
-          std::list<AbstractHandler*>::iterator it;
-
-          for (it = this->handlersList.begin(); it != this->handlersList.end(); ++it) {
-            delete *it;
-          }
-        }
+//        ~BodyHandlersChain() {
+//          std::list<std::unique_ptr<AbstractHandler>>::iterator it;
+//
+//          for (it = this->handlersList.begin(); it != this->handlersList.end(); ++it) {
+//            delete *it;
+//          }
+//        }
       private:
-        std::list<AbstractHandler*> handlersList;
+        std::list<std::unique_ptr<AbstractHandler>> handlersList;
       };
     };
   }

@@ -16,8 +16,10 @@ namespace Fcgi {
     public:
       using AbstractConnection::AbstractConnection;
 
-      void start() override;
       explicit DomainSocketConnection(boost::asio::io_service&);
+
+      void start() override;
+      void initConnectionHandler() override;
       void readBody(std::size_t bodyLength) override;
       void handleReadHead(const boost::system::error_code& errorCode, unsigned char bytesTransferred) override;
       void handleReadBody(const boost::system::error_code& errorCode, std::size_t bytesTransferred, std::size_t bodyLength) override;

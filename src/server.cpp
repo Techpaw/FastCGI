@@ -59,7 +59,9 @@ namespace Fcgi {
   void Server::startAccept()
   {
 //    this->connectionHandler.reset(new Handlers::ConnectionHandler());
-    this->connection.reset(new Connections::DomainSocketConnection(this->ioService));
+
+    this->connection = std::make_shared<Connections::DomainSocketConnection>(this->ioService);
+    this->connection->initConnectionHandler();
 
 //    this->connectionHandler->setConnection(this->connection);
 //    this->connection->setConnectionHandler(this->connectionHandler);
