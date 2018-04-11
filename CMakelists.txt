@@ -25,6 +25,7 @@ set(HEADERS
     ${INCLUDE_DIR}/constants/versions.hpp
     ${INCLUDE_DIR}/handlers/request_handlers/abstract_handler.hpp
     ${INCLUDE_DIR}/handlers/request_handlers/body_handlers_chain.hpp
+    ${INCLUDE_DIR}/handlers/request_handlers/body_parser_handler.hpp
     ${INCLUDE_DIR}/handlers/request_handlers/complete_request_handler.hpp
     ${INCLUDE_DIR}/handlers/request_handlers/fallback_handler.hpp
     ${INCLUDE_DIR}/handlers/request_handlers/get_values_handler.hpp
