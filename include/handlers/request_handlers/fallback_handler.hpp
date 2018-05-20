@@ -9,20 +9,16 @@ namespace Fcgi {
       class FallbackHandler : public AbstractHandler {
       public:
         void handle(
-            const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) override {
-          connection->start();
-        }
+          const Pointers::ConnectionPointer& connection,
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
+        ) override;
 
         bool mayHandle(
-            const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) override {
-          return true;
-        }
+          const Pointers::ConnectionPointer& connection,
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
+        ) override;
       };
     }
   }

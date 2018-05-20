@@ -3,20 +3,20 @@
 
 namespace Fcgi {
   namespace Connections {
-    DomainSocketConnection::DomainSocketConnection(boost::asio::io_service& ioService) :
-        socket(ioService),
-        strand(ioService)
+    DomainSocketConnection::DomainSocketConnection(
+        boost::asio::io_service& ioService
+    ) :
+      socket(ioService),
+      strand(ioService)
     {}
 
     void DomainSocketConnection::initConnectionHandler() {
-      this->connectionHandler = Handlers::ConnectionHandler(this->shared_from_this());
+      this->connectionHandler =
+          Handlers::ConnectionHandler(this->shared_from_this());
     }
 
-//    void DomainSocketConnection::setConnectionHandler(Pointers::ConnectionHandlerPointer& connectionHandler) {
-//      this->connectionHandler = connectionHandler;
-//    }
-
-    stream_protocol::socket& DomainSocketConnection::getSocket() {
+    stream_protocol::socket&
+    DomainSocketConnection::getSocket() {
       return this->socket;
     }
 
@@ -24,15 +24,16 @@ namespace Fcgi {
       this->headerState.allocateBuffer(Constants::Limits::HEADER_LENGTH);
 
       this->socket.async_read_some(
-          boost::asio::buffer(this->headerState.getBuffer(), Constants::Limits::HEADER_LENGTH),
-          this->strand.wrap(
-              boost::bind(
-                  &Connections::AbstractConnection::handleReadHead,
-                  shared_from_this(),
-                  boost::asio::placeholders::error,
-                  boost::asio::placeholders::bytes_transferred
-              )
-          )
+        boost::asio::buffer(this->headerState.getBuffer(),
+                            Constants::Limits::HEADER_LENGTH),
+        this->strand.wrap(
+          boost::bind(
+            &Connections::AbstractConnection::handleReadHead,
+              shared_from_this(),
+              boost::asio::placeholders::error,
+              boost::asio::placeholders::bytes_transferred
+            )
+        )
       );
     }
 
@@ -40,42 +41,61 @@ namespace Fcgi {
       this->bodyState.allocateBuffer(bodyLength);
 
       this->socket.async_read_some(
-          boost::asio::buffer(this->bodyState.getBuffer(), bodyLength),
-          this->strand.wrap(
-              boost::bind(
-                  &Connections::AbstractConnection::handleReadBody,
-                  shared_from_this(),
-                  boost::asio::placeholders::error,
-                  boost::asio::placeholders::bytes_transferred,
-                  bodyLength
-              )
+        boost::asio::buffer(this->bodyState.getBuffer(), bodyLength),
+        this->strand.wrap(
+          boost::bind(
+            &Connections::AbstractConnection::handleReadBody,
+            shared_from_this(),
+            boost::asio::placeholders::error,
+            boost::asio::placeholders::bytes_transferred,
+            bodyLength
           )
+        )
       );
     }
 
-    void DomainSocketConnection::write(const char* data, std::size_t length, bool close) {
+    void DomainSocketConnection::write(
+      const char* data,
+      std::size_t length,
+      bool closeAfterWrite
+    ) {
       this->socket.async_write_some(
-          boost::asio::buffer(data, length),
-          this->strand.wrap(
-              boost::bind(&Connections::AbstractConnection::handleWrite, shared_from_this(), boost::asio::placeholders::error, close)
+        boost::asio::buffer(data, length),
+        this->strand.wrap(
+          boost::bind(
+            &Connections::AbstractConnection::handleWrite,
+            shared_from_this(),
+            boost::asio::placeholders::error,
+            closeAfterWrite
           )
+        )
       );
     }
 
-    void DomainSocketConnection::handleWrite(const boost::system::error_code& errorCode, bool close) {
+    void DomainSocketConnection::handleWrite(
+      const boost::system::error_code& errorCode,
+      bool close
+    ) {
       if (close) {
         boost::system::error_code ignored_ec;
         this->getSocket().shutdown(stream_protocol::socket::shutdown_both, ignored_ec);
       }
     }
 
-    void DomainSocketConnection::handleReadHead(const boost::system::error_code& errorCode, unsigned char bytesTransferred) {
+    void DomainSocketConnection::handleReadHead(
+      const boost::system::error_code& errorCode,
+      unsigned char bytesTransferred
+    ) {
       std::string x = errorCode.message();
       this->headerState.setup(bytesTransferred, Constants::Limits::HEADER_LENGTH, errorCode);
       this->connectionHandler.handleReadHead();
     }
 
-    void DomainSocketConnection::handleReadBody(const boost::system::error_code& errorCode, std::size_t bytesTransferred, std::size_t bodyLength) {
+    void DomainSocketConnection::handleReadBody(
+      const boost::system::error_code& errorCode,
+      std::size_t bytesTransferred,
+      std::size_t bodyLength
+    ) {
       this->bodyState.setup(bytesTransferred, bodyLength, errorCode);
       this->connectionHandler.handleReadBody();
     }

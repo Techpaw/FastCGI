@@ -8,18 +8,6 @@ namespace Fcgi {
     class BadParamsException : public BasicException {
       using BasicException::BasicException;
     };
-
-    class InvalidBeginRequestBodyException : public BasicException {
-      using BasicException::BasicException;
-    };
-
-    class InvalidHeaderException : public BasicException {
-      using BasicException::BasicException;
-    };
-
-    class InvalidLengthException : public BasicException {
-      using BasicException::BasicException;
-    };
   }
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include <header_type.hpp>
+#include <application.hpp>
+#include <constants/header.hpp>
 #include <configuration.hpp>
 #include <constants/flags.hpp>
 #include <calculators/bytes_reducer.hpp>
@@ -13,46 +14,20 @@ namespace Fcgi {
       class CompleteRequestHandler : public AbstractHandler {
       public:
         void handle(
-            const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) override {
-          auto x = this->mayHandle(connection, request, response);
-          auto rb = Builders::ResponseBuilder(connection, response);
-
-          // @todo run middlewares here
-          // @todo save and read stdout from tmpfile
-          std::string text = "Content-type: text/html; charset=utf-8\r\n\r\nHELLO";
-
-          response->getHeader().setType(HeaderType::STDOUT);
-          response->getBody().setBody(text.c_str(), text.length());
-          response->getHeader().setRequestId(request->getHeader().getRequestId());
-          // @todo move app statuses to consts or enums
-          response->setAppStatus(200);
-          response->setprotocolStatus(ProtocolStatusType::REQUEST_COMPLETE);
-
-          rb.stdout().build();
-          rb.end().build(this->closeAfterWrite(request));
-        }
+          const Pointers::ConnectionPointer& connection,
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
+        ) override;
 
         bool mayHandle(
-            const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) override {
-          return request->getHeader().getType() == HeaderType::ABORT_REQUEST ||
-            this->lastPortionReceived(request);
-        }
+          const Pointers::ConnectionPointer& connection,
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
+        ) override;
 
-        bool stopOnHandle() override {
-          return true;
-        }
-
+        bool stopOnHandle() override;
       private:
-        bool lastPortionReceived(const RequestPointer& request) {
-          return request->getHeader().getType() == HeaderType::STDIN &&
-            request->getHeader().getBodyLength() == 0;
-        }
+        bool lastPortionReceived(const Pointers::RequestPointer&);
       };
     }
   }

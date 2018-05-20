@@ -11,43 +11,14 @@ namespace Fcgi {
     class ResponseBuilder {
     public:
       explicit ResponseBuilder(
-        const Pointers::ConnectionPointer& connection,
-        Pointers::ResponsePointer& response
-      ) :
-        connection{connection},
-        response{response}
-      {}
+        const Pointers::ConnectionPointer&,
+        const Pointers::ResponsePointer&
+      );
 
-      ResponseBuilders::OutBuilder stdout() {
-        return ResponseBuilders::OutBuilder(
-          this->connection,
-          this->response,
-          ResponseBuilders::OutBuilder::TYPE::STDOUT
-        );
-      }
-
-      ResponseBuilders::OutBuilder stderr() {
-        return ResponseBuilders::OutBuilder(
-          this->connection,
-          this->response,
-          ResponseBuilders::OutBuilder::TYPE::STDERR
-        );
-      }
-
-      ResponseBuilders::EndRequestBuilder end() {
-        return ResponseBuilders::EndRequestBuilder(
-          this->connection,
-          this->response
-        );
-      }
-
-      ResponseBuilders::GetValuesBuilder values() {
-        return ResponseBuilders::GetValuesBuilder(
-          this->connection,
-          this->response
-        );
-      }
-
+      ResponseBuilders::OutBuilder stdout();
+      ResponseBuilders::OutBuilder stderr();
+      ResponseBuilders::EndRequestBuilder end();
+      ResponseBuilders::GetValuesBuilder values();
     private:
       Pointers::ResponsePointer response;
       Pointers::ConnectionPointer connection;

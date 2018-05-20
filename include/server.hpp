@@ -7,7 +7,7 @@ namespace Fcgi {
 
   class Server {
   public:
-    explicit Server();
+    explicit Server(std::string connectionString = "");
     Server(const Server&) = delete;
     Server& operator=(const Server&) = delete;
 

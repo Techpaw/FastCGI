@@ -16,37 +16,12 @@ namespace Fcgi {
     namespace RequestParsers {
       class BodyParsingChain {
       public:
-        explicit BodyParsingChain() {
-          this->add(new BeginRequestParser());
-          this->add(new ParamsParser());
-          this->add(new StdinParser());
-          this->add(new DataParser());
-          this->add(new GetValuesParser());
-        }
+        explicit BodyParsingChain();
 
-        void add(AbstractParser* parser) {
-          this->parsersList.push_back(parser);
-        }
-
-        void parse(const RequestPointer& request, State& headerState, State& bodyState) {
-          std::list<AbstractParser*>::iterator it;
-
-          for (it = this->parsersList.begin(); it != this->parsersList.end(); ++it) {
-            if ((*it)->mayParse(request, headerState, bodyState)) {
-              (*it)->parse(request, headerState, bodyState);
-            }
-          }
-        }
-
-        ~BodyParsingChain() {
-          std::list<AbstractParser*>::iterator it;
-
-          for (it = this->parsersList.begin(); it != this->parsersList.end(); ++it) {
-            delete *it;
-          }
-        }
+        void add(std::unique_ptr<AbstractParser> parser);
+        void parse(const Pointers::RequestPointer&, State&, State&);
       private:
-        std::list<AbstractParser*> parsersList;
+        std::list<std::unique_ptr<AbstractParser>> parsersList;
       };
     }
   }

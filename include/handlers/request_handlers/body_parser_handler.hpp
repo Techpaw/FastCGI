@@ -10,22 +10,15 @@ namespace Fcgi {
       public:
         void handle(
             const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) override {
-          Parsers::RequestParsers::BodyParsingChain().parse(request,
-            connection->getBodyState(),
-            connection->getHeaderState()
-          );
-        }
+            const Pointers::RequestPointer& request,
+            const Pointers::ResponsePointer& response
+        ) override;
 
         bool mayHandle(
             const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) override {
-          return true;
-        }
+            const Pointers::RequestPointer& request,
+            const Pointers::ResponsePointer& response
+        ) override;
       };
     }
   }

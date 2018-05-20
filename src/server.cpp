@@ -5,8 +5,12 @@
 #include <connections/domain_socket_connection.hpp>
 
 namespace Fcgi {
-  Server::Server() : ioService{}, signals{ioService}, acceptor{ioService} {
-    ::unlink("/tmp/my_socket.sock");
+  Server::Server(std::string connectionString) :
+    ioService{},
+    signals{ioService},
+    acceptor{ioService}
+  {
+    ::unlink(connectionString.c_str());
 
     this->signals.add(SIGINT);
     this->signals.add(SIGTERM);
@@ -16,17 +20,11 @@ namespace Fcgi {
     #endif
 
     this->signals.async_wait(std::bind(&Server::handleStop, this));
-
-//      this->ioService = std::shared_ptr<boost::asio::io_service>(new boost::asio::io_service());
-
-    stream_protocol::endpoint endpoint("/tmp/my_socket.sock");
+    stream_protocol::endpoint endpoint(connectionString);
 
     this->acceptor.open(endpoint.protocol());
-//    this->acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
     this->acceptor.bind(endpoint);
     this->acceptor.listen();
-//      stream_protocol::acceptor acceptor(this->ioService/*,*this->endpoint_ptr*/);
-//      this->socket_ptr = std::shared_ptr<stream_protocol::socket>(new stream_protocol::socket(*this->ioService)); <-- connection level
 
     this->startAccept();
   }
@@ -58,13 +56,8 @@ namespace Fcgi {
 
   void Server::startAccept()
   {
-//    this->connectionHandler.reset(new Handlers::ConnectionHandler());
-
     this->connection = std::make_shared<Connections::DomainSocketConnection>(this->ioService);
     this->connection->initConnectionHandler();
-
-//    this->connectionHandler->setConnection(this->connection);
-//    this->connection->setConnectionHandler(this->connectionHandler);
 
     this->acceptor.async_accept(
         this->connection->getSocket(),

@@ -14,43 +14,21 @@ namespace Fcgi {
     namespace RequestHandlers {
       class BodyHandlersChain : public AbstractHandler {
       public:
-        explicit BodyHandlersChain() {
-          this->add(std::make_unique<BodyParserHandler>());
-          this->add(std::make_unique<InvalidRoleHandler>());
-          this->add(std::make_unique<GetValuesHandler>());
-          this->add(std::make_unique<CompleteRequestHandler>());
-          this->add(std::make_unique<FallbackHandler>());
-        }
+        explicit BodyHandlersChain();
 
-        void add(std::unique_ptr<AbstractHandler> handler) {
-          this->handlersList.push_back(std::move(handler));
-        }
+        void add(std::unique_ptr<AbstractHandler> handler);
 
         void handle(
-            const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) {
-          std::list<std::unique_ptr<AbstractHandler>>::iterator it;
-
-          for (it = this->handlersList.begin(); it != this->handlersList.end(); ++it) {
-            if ((*it)->mayHandle(connection, request, response)) {
-              (*it)->handle(connection, request, response);
-
-              if ((*it)->stopOnHandle()) {
-                break;
-              }
-            }
-          }
-        }
+          const Pointers::ConnectionPointer&,
+          const Pointers::RequestPointer&,
+          const Pointers::ResponsePointer&
+        ) override;
 
         bool mayHandle(
-            const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) {
-          return true;
-        }
+          const Pointers::ConnectionPointer&,
+          const Pointers::RequestPointer&,
+          const Pointers::ResponsePointer&
+        ) override;
       private:
         std::list<std::unique_ptr<AbstractHandler>> handlersList;
       };

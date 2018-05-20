@@ -6,66 +6,119 @@ set(INCLUDE_DIR include)
 set(SOURCES_DIR src)
 
 set(HEADERS
-    ${INCLUDE_DIR}/builders/response_builders/base_builder.hpp
-    ${INCLUDE_DIR}/builders/response_builders/end_request_builder.hpp
-    ${INCLUDE_DIR}/builders/response_builders/get_values_builder.hpp
-    ${INCLUDE_DIR}/builders/response_builders/out_builder.hpp
-    ${INCLUDE_DIR}/builders/response_builder.hpp
+  # builders/
+  ${INCLUDE_DIR}/builders/response_builders/base_builder.hpp
+  ${INCLUDE_DIR}/builders/response_builders/end_request_builder.hpp
+  ${INCLUDE_DIR}/builders/response_builders/get_values_builder.hpp
+  ${INCLUDE_DIR}/builders/response_builders/out_builder.hpp
+  ${INCLUDE_DIR}/builders/response_builder.hpp
 
-    ${INCLUDE_DIR}/calculators/bytes_expander.hpp
-    ${INCLUDE_DIR}/calculators/bytes_reducer.hpp
+  # calculators/
+  ${INCLUDE_DIR}/calculators/bytes_expander.hpp
+  ${INCLUDE_DIR}/calculators/bytes_reducer.hpp
 
-    ${INCLUDE_DIR}/connections/abstract_connection.hpp
-    ${INCLUDE_DIR}/connections/domain_socket_connection.hpp
+  # connections/
+  ${INCLUDE_DIR}/connections/abstract_connection.hpp
+  ${INCLUDE_DIR}/connections/domain_socket_connection.hpp
 
-    ${INCLUDE_DIR}/exceptions/basic_exception.hpp
-    ${INCLUDE_DIR}/exceptions/exceptions.hpp
-    ${INCLUDE_DIR}/constants/limits.hpp
-    ${INCLUDE_DIR}/constants/flags.hpp
-    ${INCLUDE_DIR}/constants/versions.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/abstract_handler.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/body_handlers_chain.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/body_parser_handler.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/complete_request_handler.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/fallback_handler.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/get_values_handler.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/header_handler.hpp
-    ${INCLUDE_DIR}/handlers/request_handlers/invalid_role_handler.hpp
-    ${INCLUDE_DIR}/handlers/connection_handler.fwd.hpp
-    ${INCLUDE_DIR}/handlers/connection_handler.hpp
-    ${INCLUDE_DIR}/parsers/request_parsers/abstract_parser.hpp
-    ${INCLUDE_DIR}/parsers/request_parsers/begin_request_parser.hpp
-    ${INCLUDE_DIR}/parsers/request_parsers/body_parsing_chain.hpp
-    ${INCLUDE_DIR}/parsers/request_parsers/data_parser.hpp
-    ${INCLUDE_DIR}/parsers/request_parsers/get_values_parser.hpp
-    ${INCLUDE_DIR}/parsers/request_parsers/header_parser.hpp
-    ${INCLUDE_DIR}/parsers/request_parsers/params_parser.hpp
-    ${INCLUDE_DIR}/parsers/request_parsers/stdin_parser.hpp
-    ${INCLUDE_DIR}/pointers/connection_handler_pointer.hpp
-    ${INCLUDE_DIR}/pointers/connection_pointer.hpp
-    ${INCLUDE_DIR}/pointers/response_pointer.hpp
-    ${INCLUDE_DIR}/body.hpp
-    ${INCLUDE_DIR}/server.hpp
-    ${INCLUDE_DIR}/buffer.hpp
-    ${INCLUDE_DIR}/configuration.hpp
-#    ${INCLUDE_DIR}/connection.fwd.hpp
-#    ${INCLUDE_DIR}/connection.hpp
-    ${INCLUDE_DIR}/header.hpp
-    ${INCLUDE_DIR}/header_type.hpp
-    ${INCLUDE_DIR}/protocol_status_type.hpp
-    ${INCLUDE_DIR}/request.hpp
-    ${INCLUDE_DIR}/response.hpp
-    ${INCLUDE_DIR}/role_type.hpp
-    ${INCLUDE_DIR}/state.hpp
+  # exceptions/
+  ${INCLUDE_DIR}/exceptions/basic_exception.hpp
+  ${INCLUDE_DIR}/exceptions/exceptions.hpp
+
+  # constants/
+  ${INCLUDE_DIR}/constants/application_status.hpp
+  ${INCLUDE_DIR}/constants/limits.hpp
+  ${INCLUDE_DIR}/constants/protocol_status.hpp
+  ${INCLUDE_DIR}/constants/role_type.hpp
+  ${INCLUDE_DIR}/constants/flags.hpp
+  ${INCLUDE_DIR}/constants/header.hpp
+  ${INCLUDE_DIR}/constants/versions.hpp
+
+  # handlers/
+  ${INCLUDE_DIR}/handlers/request_handlers/abstract_handler.hpp
+  ${INCLUDE_DIR}/handlers/request_handlers/body_handlers_chain.hpp
+  ${INCLUDE_DIR}/handlers/request_handlers/body_parser_handler.hpp
+  ${INCLUDE_DIR}/handlers/request_handlers/complete_request_handler.hpp
+  ${INCLUDE_DIR}/handlers/request_handlers/fallback_handler.hpp
+  ${INCLUDE_DIR}/handlers/request_handlers/get_values_handler.hpp
+  ${INCLUDE_DIR}/handlers/request_handlers/header_handler.hpp
+  ${INCLUDE_DIR}/handlers/request_handlers/invalid_role_handler.hpp
+  ${INCLUDE_DIR}/handlers/connection_handler.hpp
+
+  # parsers/
+  ${INCLUDE_DIR}/parsers/request_parsers/abstract_parser.hpp
+  ${INCLUDE_DIR}/parsers/request_parsers/begin_request_parser.hpp
+  ${INCLUDE_DIR}/parsers/request_parsers/body_parsing_chain.hpp
+  ${INCLUDE_DIR}/parsers/request_parsers/data_parser.hpp
+  ${INCLUDE_DIR}/parsers/request_parsers/get_values_parser.hpp
+  ${INCLUDE_DIR}/parsers/request_parsers/header_parser.hpp
+  ${INCLUDE_DIR}/parsers/request_parsers/params_parser.hpp
+  ${INCLUDE_DIR}/parsers/request_parsers/stdin_parser.hpp
+
+  # pointers/
+  ${INCLUDE_DIR}/pointers/connection_pointer.hpp
+  ${INCLUDE_DIR}/pointers/request_pointer.hpp
+  ${INCLUDE_DIR}/pointers/response_pointer.hpp
+
+  # /
+  ${INCLUDE_DIR}/application.hpp
+  ${INCLUDE_DIR}/application_interface.hpp
+  ${INCLUDE_DIR}/body.hpp
+  ${INCLUDE_DIR}/server.hpp
+  ${INCLUDE_DIR}/buffer.hpp
+  ${INCLUDE_DIR}/configuration.hpp
+  ${INCLUDE_DIR}/header.hpp
+  ${INCLUDE_DIR}/request.hpp
+  ${INCLUDE_DIR}/response.hpp
+  ${INCLUDE_DIR}/state.hpp
 )
 
 set(SOURCES
+  # builders/
+  ${SOURCES_DIR}/builders/response_builders/base_builder.cpp
+  ${SOURCES_DIR}/builders/response_builders/end_request_builder.cpp
+  ${SOURCES_DIR}/builders/response_builders/get_values_builder.cpp
+  ${SOURCES_DIR}/builders/response_builders/out_builder.cpp
+  ${SOURCES_DIR}/builders/response_builder.cpp
+
+  # calculators/
+  ${SOURCES_DIR}/calculators/bytes_expander.cpp
+  ${SOURCES_DIR}/calculators/bytes_reducer.cpp
+
+  # connections/
   ${SOURCES_DIR}/connections/domain_socket_connection.cpp
+
+  # exceptions/
   ${SOURCES_DIR}/exceptions/basic_exception.cpp
-  ${SOURCES_DIR}/handlers/connection_handler.cpp
+
+  # handlers/
+  ${SOURCES_DIR}/handlers/request_handlers/body_handlers_chain.cpp
+  ${SOURCES_DIR}/handlers/request_handlers/body_parser_handler.cpp
+  ${SOURCES_DIR}/handlers/request_handlers/complete_request_handler.cpp
+  ${SOURCES_DIR}/handlers/request_handlers/fallback_handler.cpp
+  ${SOURCES_DIR}/handlers/request_handlers/get_values_handler.cpp
   ${SOURCES_DIR}/handlers/request_handlers/header_handler.cpp
-#  ${SOURCES_DIR}/connection.cpp
+  ${SOURCES_DIR}/handlers/request_handlers/invalid_role_handler.cpp
+  ${SOURCES_DIR}/handlers/connection_handler.cpp
+
+  # parsers/
+  ${SOURCES_DIR}/parsers/request_parsers/begin_request_parser.cpp
+  ${SOURCES_DIR}/parsers/request_parsers/body_parsing_chain.cpp
+  ${SOURCES_DIR}/parsers/request_parsers/data_parser.cpp
+  ${SOURCES_DIR}/parsers/request_parsers/get_values_parser.cpp
+  ${SOURCES_DIR}/parsers/request_parsers/header_parser.cpp
+  ${SOURCES_DIR}/parsers/request_parsers/params_parser.cpp
+  ${SOURCES_DIR}/parsers/request_parsers/stdin_parser.cpp
+
+  # /
+  ${SOURCES_DIR}/application.cpp
   ${SOURCES_DIR}/server.cpp
+  ${SOURCES_DIR}/body.cpp
+  ${SOURCES_DIR}/buffer.cpp
+  ${SOURCES_DIR}/configuration.cpp
+  ${SOURCES_DIR}/header.cpp
+  ${SOURCES_DIR}/request.cpp
+  ${SOURCES_DIR}/state.cpp
 )
 
 include(${PROJECT_SOURCE_DIR}/conanbuildinfo.cmake)

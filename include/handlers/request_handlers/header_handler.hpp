@@ -12,19 +12,19 @@ namespace Fcgi {
     namespace RequestHandlers {
       class HeaderHandler : public AbstractHandler {
       public:
+        explicit HeaderHandler() = default;
+
         void handle(
           const Pointers::ConnectionPointer& connection,
-          const RequestPointer& request,
-          Pointers::ResponsePointer& response
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
         ) override;
 
         bool mayHandle(
           const Pointers::ConnectionPointer& connection,
-          const RequestPointer& request,
-          Pointers::ResponsePointer& response
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
         ) override;
-
-        explicit HeaderHandler() = default;
       private:
         State& headerState(const Pointers::ConnectionPointer&);
       };

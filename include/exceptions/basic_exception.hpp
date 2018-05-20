@@ -9,8 +9,8 @@ namespace Fcgi {
     class BasicException : public virtual boost::exception, public virtual std::exception {
     public:
       BasicException() = default;
-      explicit BasicException(std::string str);
-      virtual const char* what() const noexcept override;
+      explicit BasicException(std::string);
+      const char* what() const noexcept override;
       virtual const boost::stacktrace::stacktrace getStacktrace() const noexcept;
     private:
       std::string info;

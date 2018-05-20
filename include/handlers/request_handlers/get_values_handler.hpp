@@ -1,6 +1,6 @@
 #pragma once
 
-#include <header_type.hpp>
+#include <constants/header.hpp>
 #include <builders/response_builder.hpp>
 #include <handlers/request_handlers/abstract_handler.hpp>
 
@@ -10,21 +10,16 @@ namespace Fcgi {
       class GetValuesHandler : public AbstractHandler {
       public:
         void handle(
-            const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) override {
-          auto rb = Builders::ResponseBuilder(connection, response);
-          rb.values().build();
-        }
+          const Pointers::ConnectionPointer& connection,
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
+        ) override;
 
         bool mayHandle(
-            const Pointers::ConnectionPointer& connection,
-            const RequestPointer& request,
-            Pointers::ResponsePointer& response
-        ) override {
-          return request->getHeader().getType() == HeaderType::GET_VALUES;
-        }
+          const Pointers::ConnectionPointer& connection,
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
+        ) override;
       };
     }
   }

@@ -2,7 +2,8 @@
 
 #include <header.hpp>
 #include <body.hpp>
-#include <protocol_status_type.hpp>
+#include <constants/protocol_status.hpp>
+#include <constants/application_status.hpp>
 
 namespace Fcgi {
   class Response {
@@ -11,41 +12,33 @@ namespace Fcgi {
     Response(const Response&) = delete;
     Response& operator=(const Response&) = delete;
 
-//    void setHeader(Header& header) {
-//      this->header = header;
-//    }
-
     Header& getHeader() {
       return this->header;
     }
-
-//    void setBody(Body& body) {
-//      this->body = body;
-//    }
 
     Body& getBody() {
       return this->body;
     }
 
-    void setAppStatus(std::uint32_t status) {
+    void setAppStatus(Constants::ApplicationStatus status) {
       this->appStatus = status;
     }
 
-    std::uint32_t getAppStatus() {
+    Constants::ApplicationStatus getAppStatus() {
       return this->appStatus;
     }
 
-    void setprotocolStatus(ProtocolStatusType status) {
+    void setProtocolStatus(Constants::ProtocolStatus status) {
       this->protocolStatus = status;
     }
 
-    ProtocolStatusType getProtocolStatus() {
+    Constants::ProtocolStatus getProtocolStatus() {
       return this->protocolStatus;
     }
   private:
     Header header;
     Body body;
-    std::uint32_t appStatus;
-    ProtocolStatusType protocolStatus;
+    Constants::ApplicationStatus appStatus;
+    Constants::ProtocolStatus protocolStatus;
   };
 }

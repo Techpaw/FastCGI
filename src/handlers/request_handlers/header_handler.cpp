@@ -1,12 +1,12 @@
-#include <connections/domain_socket_connection.hpp>
+#include <handlers/request_handlers/header_handler.hpp>
 
 namespace Fcgi {
   namespace Handlers {
     namespace RequestHandlers {
       void HeaderHandler::handle(
           const Pointers::ConnectionPointer& connection,
-          const RequestPointer& request,
-          Pointers::ResponsePointer& response
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
       ) {
         Parsers::RequestParsers::HeaderParser().parse(
           request->getHeader(),
@@ -17,8 +17,8 @@ namespace Fcgi {
 
       bool HeaderHandler::mayHandle(
           const Pointers::ConnectionPointer& connection,
-          const RequestPointer& request,
-          Pointers::ResponsePointer& response
+          const Pointers::RequestPointer& request,
+          const Pointers::ResponsePointer& response
       ) {
         return true;
       };

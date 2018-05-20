@@ -6,30 +6,14 @@
 namespace Fcgi {
   class Request {
   public:
-    explicit Request(): header{Header()}, body{Body()} {};
+    explicit Request();
     Request(const Request&) = delete;
     Request& operator=(const Request&) = delete;
 
-//    void setHeader(Header& header) {
-//      this->header = header;
-//    }
-
-    Header& getHeader() {
-      return this->header;
-    }
-
-//    void setBody(Body& body) {
-//      this->body = body;
-//    }
-
-    Body& getBody() {
-      return this->body;
-    }
+    Header& getHeader();
+    Body& getBody();
   private:
     Header header;
     Body body;
   };
-
-  // @todo move to Pointers::
-  typedef std::shared_ptr<Request> RequestPointer;
 }

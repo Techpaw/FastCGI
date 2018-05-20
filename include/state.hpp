@@ -13,40 +13,18 @@ namespace Fcgi {
     State(const State&) = delete;
     State& operator=(const State&) = delete;
 
-    void allocateBuffer(std::size_t length) {
-      delete[] this->buffer;
-      this->buffer = new char[length];
-    }
-
     void setup(
         std::size_t bytesTransferred,
         std::size_t bytesReceived,
         const boost::system::error_code& errorCode
-    ) {
-      this->bytesTransferred = bytesTransferred;
-      this->bytesReceived = bytesReceived;
-      this->errorCode = errorCode;
-    }
+    );
 
-    std::size_t getBytesTransferred() {
-      return this->bytesTransferred;
-    }
-
-    std::size_t getBytesReceived() {
-      return this->bytesReceived;
-    }
-
-    boost::system::error_code& getErrorCode() {
-      return this->errorCode;
-    }
-
-    char* getBuffer() {
-      return this->buffer;
-    }
-
-    ~State() {
-      delete[] this->buffer;
-    }
+    void allocateBuffer(std::size_t length);
+    std::size_t getBytesTransferred();
+    std::size_t getBytesReceived();
+    boost::system::error_code& getErrorCode();
+    char* getBuffer();
+    ~State();
   private:
     char* buffer{nullptr};
     std::size_t bytesTransferred{0};
