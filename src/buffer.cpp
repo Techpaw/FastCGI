@@ -1,4 +1,4 @@
-#include <buffer.hpp>
+#include <fastcgi/buffer.hpp>
 
 namespace Fcgi {
   Buffer::Buffer() : fileMode{false}, dataFile{nullptr}, dataLength{0} {};

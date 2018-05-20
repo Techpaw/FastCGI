@@ -2,7 +2,7 @@
 #include <boost/exception/all.hpp>
 #include <boost/stacktrace.hpp>
 
-#include <exceptions/basic_exception.hpp>
+#include <fastcgi/exceptions/basic_exception.hpp>
 
 namespace Fcgi {
   namespace Exceptions {

@@ -1,5 +1,5 @@
 #include <boost/bind.hpp>
-#include <connections/domain_socket_connection.hpp>
+#include <fastcgi/connections/domain_socket_connection.hpp>
 
 namespace Fcgi {
   namespace Connections {

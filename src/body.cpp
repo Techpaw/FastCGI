@@ -1,4 +1,4 @@
-#include <body.hpp>
+#include <fastcgi/body.hpp>
 
 namespace Fcgi {
   Body::Body() : data{Buffer()}, body{Buffer()}, error{Buffer()} {}

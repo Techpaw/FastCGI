@@ -1,4 +1,4 @@
-#include <builders/response_builders/end_request_builder.hpp>
+#include <fastcgi/builders/response_builders/end_request_builder.hpp>
 
 namespace Fcgi {
   namespace Builders {

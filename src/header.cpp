@@ -1,4 +1,4 @@
-#include <header.hpp>
+#include <fastcgi/header.hpp>
 
 namespace Fcgi {
   void Header::setVersion(std::uint8_t version) {

@@ -1,8 +1,8 @@
 #include <thread>
 #include <boost/bind.hpp>
 
-#include <server.hpp>
-#include <connections/domain_socket_connection.hpp>
+#include <fastcgi/server.hpp>
+#include <fastcgi/connections/domain_socket_connection.hpp>
 
 namespace Fcgi {
   Server::Server(std::string connectionString) :

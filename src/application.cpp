@@ -1,4 +1,4 @@
-#include <application.hpp>
+#include <fastcgi/application.hpp>
 
 namespace Fcgi {
   Application& Application::instance() {

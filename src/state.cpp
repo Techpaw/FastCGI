@@ -1,4 +1,4 @@
-#include <state.hpp>
+#include <fastcgi/state.hpp>
 
 namespace Fcgi {
   void State::allocateBuffer(std::size_t length) {

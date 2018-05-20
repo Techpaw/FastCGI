@@ -10,70 +10,70 @@ conan_basic_setup()
 
 set(HEADERS
   # builders/
-  ${INCLUDE_DIR}/builders/response_builders/base_builder.hpp
-  ${INCLUDE_DIR}/builders/response_builders/end_request_builder.hpp
-  ${INCLUDE_DIR}/builders/response_builders/get_values_builder.hpp
-  ${INCLUDE_DIR}/builders/response_builders/out_builder.hpp
-  ${INCLUDE_DIR}/builders/response_builder.hpp
+  ${INCLUDE_DIR}/fastcgi/builders/response_builders/base_builder.hpp
+  ${INCLUDE_DIR}/fastcgi/builders/response_builders/end_request_builder.hpp
+  ${INCLUDE_DIR}/fastcgi/builders/response_builders/get_values_builder.hpp
+  ${INCLUDE_DIR}/fastcgi/builders/response_builders/out_builder.hpp
+  ${INCLUDE_DIR}/fastcgi/builders/response_builder.hpp
 
   # calculators/
-  ${INCLUDE_DIR}/calculators/bytes_expander.hpp
-  ${INCLUDE_DIR}/calculators/bytes_reducer.hpp
+  ${INCLUDE_DIR}/fastcgi/calculators/bytes_expander.hpp
+  ${INCLUDE_DIR}/fastcgi/calculators/bytes_reducer.hpp
 
   # connections/
-  ${INCLUDE_DIR}/connections/abstract_connection.hpp
-  ${INCLUDE_DIR}/connections/domain_socket_connection.hpp
+  ${INCLUDE_DIR}/fastcgi/connections/abstract_connection.hpp
+  ${INCLUDE_DIR}/fastcgi/connections/domain_socket_connection.hpp
 
   # exceptions/
-  ${INCLUDE_DIR}/exceptions/basic_exception.hpp
-  ${INCLUDE_DIR}/exceptions/exceptions.hpp
+  ${INCLUDE_DIR}/fastcgi/exceptions/basic_exception.hpp
+  ${INCLUDE_DIR}/fastcgi/exceptions/exceptions.hpp
 
   # constants/
-  ${INCLUDE_DIR}/constants/application_status.hpp
-  ${INCLUDE_DIR}/constants/limits.hpp
-  ${INCLUDE_DIR}/constants/protocol_status.hpp
-  ${INCLUDE_DIR}/constants/role_type.hpp
-  ${INCLUDE_DIR}/constants/flags.hpp
-  ${INCLUDE_DIR}/constants/header.hpp
-  ${INCLUDE_DIR}/constants/versions.hpp
+  ${INCLUDE_DIR}/fastcgi/constants/application_status.hpp
+  ${INCLUDE_DIR}/fastcgi/constants/limits.hpp
+  ${INCLUDE_DIR}/fastcgi/constants/protocol_status.hpp
+  ${INCLUDE_DIR}/fastcgi/constants/role_type.hpp
+  ${INCLUDE_DIR}/fastcgi/constants/flags.hpp
+  ${INCLUDE_DIR}/fastcgi/constants/header.hpp
+  ${INCLUDE_DIR}/fastcgi/constants/versions.hpp
 
   # handlers/
-  ${INCLUDE_DIR}/handlers/request_handlers/abstract_handler.hpp
-  ${INCLUDE_DIR}/handlers/request_handlers/body_handlers_chain.hpp
-  ${INCLUDE_DIR}/handlers/request_handlers/body_parser_handler.hpp
-  ${INCLUDE_DIR}/handlers/request_handlers/complete_request_handler.hpp
-  ${INCLUDE_DIR}/handlers/request_handlers/fallback_handler.hpp
-  ${INCLUDE_DIR}/handlers/request_handlers/get_values_handler.hpp
-  ${INCLUDE_DIR}/handlers/request_handlers/header_handler.hpp
-  ${INCLUDE_DIR}/handlers/request_handlers/invalid_role_handler.hpp
-  ${INCLUDE_DIR}/handlers/connection_handler.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/request_handlers/abstract_handler.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/request_handlers/body_handlers_chain.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/request_handlers/body_parser_handler.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/request_handlers/complete_request_handler.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/request_handlers/fallback_handler.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/request_handlers/get_values_handler.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/request_handlers/header_handler.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/request_handlers/invalid_role_handler.hpp
+  ${INCLUDE_DIR}/fastcgi/handlers/connection_handler.hpp
 
   # parsers/
-  ${INCLUDE_DIR}/parsers/request_parsers/abstract_parser.hpp
-  ${INCLUDE_DIR}/parsers/request_parsers/begin_request_parser.hpp
-  ${INCLUDE_DIR}/parsers/request_parsers/body_parsing_chain.hpp
-  ${INCLUDE_DIR}/parsers/request_parsers/data_parser.hpp
-  ${INCLUDE_DIR}/parsers/request_parsers/get_values_parser.hpp
-  ${INCLUDE_DIR}/parsers/request_parsers/header_parser.hpp
-  ${INCLUDE_DIR}/parsers/request_parsers/params_parser.hpp
-  ${INCLUDE_DIR}/parsers/request_parsers/stdin_parser.hpp
+  ${INCLUDE_DIR}/fastcgi/parsers/request_parsers/abstract_parser.hpp
+  ${INCLUDE_DIR}/fastcgi/parsers/request_parsers/begin_request_parser.hpp
+  ${INCLUDE_DIR}/fastcgi/parsers/request_parsers/body_parsing_chain.hpp
+  ${INCLUDE_DIR}/fastcgi/parsers/request_parsers/data_parser.hpp
+  ${INCLUDE_DIR}/fastcgi/parsers/request_parsers/get_values_parser.hpp
+  ${INCLUDE_DIR}/fastcgi/parsers/request_parsers/header_parser.hpp
+  ${INCLUDE_DIR}/fastcgi/parsers/request_parsers/params_parser.hpp
+  ${INCLUDE_DIR}/fastcgi/parsers/request_parsers/stdin_parser.hpp
 
   # pointers/
-  ${INCLUDE_DIR}/pointers/connection_pointer.hpp
-  ${INCLUDE_DIR}/pointers/request_pointer.hpp
-  ${INCLUDE_DIR}/pointers/response_pointer.hpp
+  ${INCLUDE_DIR}/fastcgi/pointers/connection_pointer.hpp
+  ${INCLUDE_DIR}/fastcgi/pointers/request_pointer.hpp
+  ${INCLUDE_DIR}/fastcgi/pointers/response_pointer.hpp
 
   # /
-  ${INCLUDE_DIR}/application.hpp
-  ${INCLUDE_DIR}/application_interface.hpp
-  ${INCLUDE_DIR}/body.hpp
-  ${INCLUDE_DIR}/server.hpp
-  ${INCLUDE_DIR}/buffer.hpp
-  ${INCLUDE_DIR}/configuration.hpp
-  ${INCLUDE_DIR}/header.hpp
-  ${INCLUDE_DIR}/request.hpp
-  ${INCLUDE_DIR}/response.hpp
-  ${INCLUDE_DIR}/state.hpp
+  ${INCLUDE_DIR}/fastcgi/application.hpp
+  ${INCLUDE_DIR}/fastcgi/application_interface.hpp
+  ${INCLUDE_DIR}/fastcgi/body.hpp
+  ${INCLUDE_DIR}/fastcgi/server.hpp
+  ${INCLUDE_DIR}/fastcgi/buffer.hpp
+  ${INCLUDE_DIR}/fastcgi/configuration.hpp
+  ${INCLUDE_DIR}/fastcgi/header.hpp
+  ${INCLUDE_DIR}/fastcgi/request.hpp
+  ${INCLUDE_DIR}/fastcgi/response.hpp
+  ${INCLUDE_DIR}/fastcgi/state.hpp
 )
 
 set(SOURCES
@@ -125,7 +125,5 @@ set(SOURCES
 )
 
 add_library(fastcgi STATIC ${HEADERS} ${SOURCES})
-
-#add_executable(main main.cpp ${HEADERS} ${SOURCES})
 target_link_libraries(fastcgi ${CONAN_LIBS})
 target_include_directories(fastcgi PRIVATE ${INCLUDE_DIR} ${SOURCES_DIR})

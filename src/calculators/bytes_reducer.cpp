@@ -1,4 +1,4 @@
-#include <calculators/bytes_reducer.hpp>
+#include <fastcgi/calculators/bytes_reducer.hpp>
 
 namespace Fcgi {
   namespace Calculators {

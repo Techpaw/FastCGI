@@ -1,4 +1,4 @@
-#include <configuration.hpp>
+#include <fastcgi/configuration.hpp>
 
 namespace Fcgi {
   Configuration::Configuration() {

@@ -1,4 +1,4 @@
-#include <handlers/request_handlers/invalid_role_handler.hpp>
+#include <fastcgi/handlers/request_handlers/invalid_role_handler.hpp>
 
 namespace Fcgi {
   namespace Handlers {
