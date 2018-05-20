@@ -5,6 +5,9 @@ add_definitions("-std=c++14")
 set(INCLUDE_DIR include)
 set(SOURCES_DIR src)
 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+
 set(HEADERS
   # builders/
   ${INCLUDE_DIR}/builders/response_builders/base_builder.hpp
@@ -120,3 +123,9 @@ set(SOURCES
   ${SOURCES_DIR}/request.cpp
   ${SOURCES_DIR}/state.cpp
 )
+
+add_library(fastcgi STATIC ${HEADERS} ${SOURCES})
+
+#add_executable(main main.cpp ${HEADERS} ${SOURCES})
+target_link_libraries(fastcgi ${CONAN_LIBS})
+target_include_directories(fastcgi PRIVATE ${INCLUDE_DIR} ${SOURCES_DIR})
