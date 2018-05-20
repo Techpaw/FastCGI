@@ -121,9 +121,6 @@ set(SOURCES
   ${SOURCES_DIR}/state.cpp
 )
 
-include(${PROJECT_SOURCE_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
 add_executable(main main.cpp ${HEADERS} ${SOURCES})
 target_link_libraries(main ${CONAN_LIBS})
 target_include_directories(main PRIVATE ${INCLUDE_DIR} ${SOURCES_DIR})
